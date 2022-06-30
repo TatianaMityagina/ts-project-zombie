@@ -1,0 +1,29 @@
+$retina-dpi: 144dpi;
+$retina-dppx: 1.5dppx;
+
+$reserve-font-family: 'Arial', sans-serif;
+$main-font-family: 'Atma', $reserve-font-family;
+
+$font-size-base: 16px;
+
+$default-transition-duration: 0.3s ease-in-out;
+
+$white: #FFF;
+$black: #000;
+$thunderbird: #c41d1d;
+$pomegranate: #f22a18;
+$light-gray: #959CA3;
+$color-pink: #ef8cc0;
+$color-brilliant-rose: #ee5ca0;
+$color-error: #e7b5c3;
+$color-green: #87ef70;
+$color-transparent: transparent;
+
+// Viewports
+//---------------------------------
+
+$viewport--sm: 320px;
+$viewport--md: 690px;
+$viewport--lg: 1024px;
+$viewport--xl: 1280px;
+$viewport--xxl: 1920px;
