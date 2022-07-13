@@ -2,11 +2,8 @@ export interface RegistrationBody {
     name: string;
     email: string,
     password: string;
-    password_confirmation: string;
+    passwordConfirmation: string;
     role : RoleType;
 }
 
-export enum RoleType {
-    User = 'user',
-    Admin = 'admin',
-}
+export type RoleType = 'user' | 'admin'

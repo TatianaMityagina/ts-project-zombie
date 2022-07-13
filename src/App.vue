@@ -13,7 +13,7 @@ export default defineComponent({
     this.init()
   },
   methods: {
-    ...mapActions( [ActionTypes.INIT] )
+    ...mapActions( { init: ActionTypes.INIT } )
   }
 });
 </script>

@@ -8,6 +8,7 @@
 import { defineComponent } from "vue";
 import { mapActions, mapState } from "vuex";
 import AppButton from "@/components/app/app-button/AppButton.vue";
+import {ActionTypes} from "@/store/types";
 
 export default defineComponent({
   name: "HomePage",
@@ -16,9 +17,9 @@ export default defineComponent({
     ...mapState('user', ["bgChange"])
   },
   methods: {
-    ...mapActions('user', ["changeColor"]),
-    changeBG() {
-      this.changeColor(this.bgChange)
+    ...mapActions('user', { changeColor: ActionTypes.CHANGE_COLOR }),
+    changeBG(): void {
+      this.changeColor(!this.bgChange)
     }
   }
 });

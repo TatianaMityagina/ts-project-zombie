@@ -1,16 +1,14 @@
 import { createStore } from "vuex";
-import { useToast } from 'vue-toastification'
 import modules from "@/store/modules/index";
 import router, {rolesRoutes} from "@/router";
 import AuthService, {UserData} from "@/services/authService";
 import {AuthBody} from "@/interfaces/auth/authBody";
 import {RegistrationBody, RoleType} from "@/interfaces/registration/registrationBody";
 import {ActionType, ActionTypes, MutationTypes, RootState} from "@/store/types";
-
-const toast = useToast();
+import {useNotification} from "@/compositions/notification";
 
 const actionPermissions: { [key in ActionType]?: RoleType[]} = {
-  [ActionTypes.CHANGE_COLOR]: [RoleType.Admin],
+  [ActionTypes.CHANGE_COLOR]: ['admin'],
 }
 const authService = new AuthService();
 
@@ -51,7 +49,7 @@ export default createStore<RootState>({
 
         await router.push("/home")
       } catch (error) {
-        await router.push("/authorisation")
+        await router.push("/authorization")
         throw error
       }
     },
@@ -72,7 +70,7 @@ export default createStore<RootState>({
       authService.logout();
       commit(MutationTypes.SET_IS_AUTH, false)
       commit(MutationTypes.REMOVE_CURRENT_USER)
-      return router.push("/authorisation")
+      return router.push("/authorization")
     },
     [ActionTypes.CHECK_PERMISSION]({ state }, action: ActionType) {
       const permissions = actionPermissions[action];
@@ -84,8 +82,8 @@ export default createStore<RootState>({
         throw new Error('Can\'t check permission for non logged in user')
       }
 
-      if (state.currentUser.role == RoleType.User) {
-        toast.error("Only available to admins")
+      if (state.currentUser.role == 'user') {
+        useNotification().showError("Only available to admins")
       }
 
       return permissions.includes(state.currentUser.role)

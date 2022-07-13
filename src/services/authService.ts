@@ -4,7 +4,7 @@ import {RegistrationBody} from "@/interfaces/registration/registrationBody";
 import {localeStorageService} from "@/services/localeStorage";
 
 type User = RegistrationBody;
-export type UserData = Omit<User, 'password' | 'password_confirmation'>;
+export type UserData = Omit<User, 'password' | 'passwordConfirmation'>;
 
 export enum StorageKeys {
     LOGIN = "login",
@@ -13,7 +13,7 @@ export enum StorageKeys {
 }
 
 export default class AuthService {
-    public async singUp(data: RegistrationBody) {
+    public async singUp(data: RegistrationBody): Promise<UserData | null> {
         const loginData = {
             email: data.email,
             password: data.password,
@@ -28,7 +28,7 @@ export default class AuthService {
         return this.login(loginData)
     }
 
-    public async login(data: AuthBody) {
+    public async login(data: AuthBody): Promise<UserData | null> {
         await APIService.post(StorageKeys.LOGIN, data);
         const user = this.getUser(data.email)
 
@@ -44,16 +44,16 @@ export default class AuthService {
         return this.getCurrentUser()
     }
 
-    public logout() {
+    public logout(): void {
         localeStorageService.delete(StorageKeys.CURRENT_USER);
     }
 
     public getUser(email: string): User {
-        const users =  localeStorageService.getJSON(StorageKeys.USERS);
-        return users[email] as User
+        const users =  localeStorageService.getJSON<Record<string, User>>(StorageKeys.USERS);
+        return users[email]
     }
 
-    public hasUser(email: string) {
+    public hasUser(email: string): boolean {
         const users = localeStorageService.getJSON(StorageKeys.USERS)
         return !!users[email]
     }
@@ -67,7 +67,7 @@ export default class AuthService {
         return this.getUser(currentUser)
     }
 
-    protected async addUser(user: User) {
+    protected async addUser(user: User): Promise<void>  {
         const users = await APIService.get('users');
         return APIService.post('users', { ...users, [user.email]: user })
     }

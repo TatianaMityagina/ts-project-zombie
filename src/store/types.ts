@@ -8,12 +8,12 @@ export const MutationTypes = {
 }
 
 export const ActionTypes = {
-  CHECK_PERMISSION: "checkPermission",
-  LOGIN: "login",
-  LOGOUT: "logout",
-  INIT: "init",
-  SING_UP: "singUp",
-  CHANGE_COLOR: 'changeColor',
+  CHECK_PERMISSION: "CHECK_PERMISSION",
+  LOGIN: "LOGIN",
+  LOGOUT: "LOGOUT",
+  INIT: "INIT",
+  SING_UP: "SING_UP",
+  CHANGE_COLOR: 'CHANGE_COLOR',
 }
 export type ActionType = keyof typeof ActionTypes
 

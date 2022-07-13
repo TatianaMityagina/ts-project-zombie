@@ -17,6 +17,7 @@ import { defineComponent } from "vue";
 import AppButton from "@/components/app/app-button/AppButton.vue";
 import BurgerToggler from "@/components/app/base/BurgerToggler.vue";
 import {mapActions} from "vuex";
+import { ActionTypes } from "@/store/types";
 
 export default defineComponent({
   name: "HeaderMain",
@@ -25,8 +26,8 @@ export default defineComponent({
     BurgerToggler
   },
   methods: {
-    ...mapActions( ["logout"]),
-    submit () {
+    ...mapActions({ logout: ActionTypes.LOGOUT }),
+    submit(): void {
       this.logout()
     }
   }

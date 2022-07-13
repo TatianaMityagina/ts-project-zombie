@@ -1,10 +1,10 @@
 <template>
-  <div class="authorisation-form">
-    <h1 class="authorisation-form__title">Authorisation</h1>
-    <form class="authorisation-form__form" @submit.prevent="submit">
+  <div class="authorization-form">
+    <h1 class="authorization-form__title">Authorisation</h1>
+    <form class="authorization-form__form" @submit.prevent="submit">
       <app-input type="email" v-model="authBody.email" required>Email</app-input>
       <app-input type="password" v-model="authBody.password">Password</app-input>
-      <p class="authorisation-form__text">Don't have an account yet? <router-link to="/registration">Register now</router-link></p>
+      <p class="authorization-form__text">Don't have an account yet? <router-link to="/registration">Register now</router-link></p>
       <app-button tag="button" type="submit">Sign in</app-button>
     </form>
   </div>
@@ -12,11 +12,12 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import { useToast } from "vue-toastification";
 import AppInput from "@/components/app/app-input/AppInput.vue";
 import AppButton from "@/components/app/app-button/AppButton.vue";
 import { AuthBody } from "@/interfaces/auth/authBody";
 import {mapActions} from "vuex";
+import { useNotification } from "@/compositions/notification";
+import {ActionTypes} from "@/store/types";
 
 const authBody: AuthBody = {
   email: '',
@@ -29,34 +30,18 @@ export default defineComponent({
     AppInput,
     AppButton
   },
-  setup() {
-    const toast = useToast();
-    return { toast }
-  },
   data() {
     return {
       authBody
     }
   },
   methods: {
-    ...mapActions( ["login"]),
-    async submit () {
+    ...mapActions({ login: ActionTypes.LOGIN }),
+    async submit (): Promise<void> {
       try {
         await this.login(this.authBody)
       } catch (e) {
-        this.toast.error((e as Error).toString(), {
-          timeout: 5000,
-          closeOnClick: true,
-          pauseOnFocusLoss: true,
-          pauseOnHover: true,
-          draggable: true,
-          draggablePercent: 0.6,
-          showCloseButtonOnHover: false,
-          hideProgressBar: true,
-          closeButton: "button",
-          icon: true,
-          rtl: false
-        })
+        useNotification().showError((e as Error).toString())
       }
     }
   }
@@ -64,7 +49,7 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-  .authorisation-form {
+  .authorization-form {
     position: relative;
     display: flex;
     flex-direction: column;

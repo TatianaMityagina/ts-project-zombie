@@ -5,7 +5,7 @@
       <app-input v-model="registrationBody.name" aria-required="true" required>Name</app-input>
       <app-input type="password" v-model="registrationBody.password">Password</app-input>
       <app-input type="email" v-model="registrationBody.email" required>Email</app-input>
-      <app-input type="password" v-model="registrationBody.password_confirmation">Repeat password</app-input>
+      <app-input type="password" v-model="registrationBody.passwordConfirmation">Repeat password</app-input>
       <app-checkbox type="checkbox" v-model="registrationBody.isAdmin">I'm a platform administrator</app-checkbox>
       <app-button tag="button" type="submit" :aria-disabled="isDisabled">Sign up</app-button>
     </form>
@@ -19,14 +19,15 @@ import AppButton from "@/components/app/app-button/AppButton.vue";
 import AppCheckbox from "@/components/app/app-checkbox/AppCheckbox.vue";
 import {RegistrationBody, RoleType} from "@/interfaces/registration/registrationBody";
 import {mapActions} from "vuex";
+import {ActionTypes} from "@/store/types";
 
 const registrationBody: RegistrationBody & {isAdmin: boolean} = {
   name: '',
   email: '',
   password: '',
-  password_confirmation: '',
+  passwordConfirmation: '',
   isAdmin: false,
-  role: RoleType.User,
+  role: 'user',
 }
 
 
@@ -44,14 +45,15 @@ export default defineComponent({
   },
   computed: {
     isDisabled(): boolean {
-      return !this.registrationBody.password || this.registrationBody.password !== this.registrationBody.password_confirmation;
+      return !this.registrationBody.password || this.registrationBody.password !== this.registrationBody.passwordConfirmation;
     },
   },
   methods: {
-    ...mapActions( ["singUp"]),
-    register() {
+    ...mapActions({ singUp: ActionTypes.SING_UP }),
+    register(): void {
       const { isAdmin, ...formData } = this.registrationBody
-      formData.role = isAdmin ? RoleType.Admin : RoleType.User;
+      formData.role = isAdmin ? 'admin' : 'user'
+      console.log(formData)
       this.singUp(formData);
     }
   }

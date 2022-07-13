@@ -1,23 +1,23 @@
 <template>
-  <div class="authorisation-page">
-    <authorisation-form></authorisation-form>
+  <div class="authorization-page">
+    <authorization-form></authorization-form>
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import authorisationForm from "@/components/page/authorisation/index.vue";
+import AuthorizationForm from "@/components/page/authorization/index.vue";
 
 export default defineComponent({
-  name: "AuthorisationPage",
+  name: "AuthorizationPage",
   components: {
-    authorisationForm
+    AuthorizationForm
   },
 });
 </script>
 
 <style lang="scss" scoped>
-  .authorisation-page {
+  .authorization-page {
     display: flex;
     justify-content: center;
     align-items: center;

@@ -2,7 +2,7 @@ import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router";
 import store from "@/store";
 import Home from "@/views/HomePage.vue";
 import Registration from "@/views/RegistraionPage.vue";
-import Authorisation from "@/views/AuthorisationPage.vue";
+import Authorization from "@/views/AuthorizationPage.vue";
 import AboutUs from "@/views/AboutUsPage.vue";
 import HistoryPage from "@/views/HistoryPage.vue";
 import ErrorPage from "@/views/ErrorPage.vue";
@@ -14,7 +14,7 @@ const routes: Array<RouteRecordRaw> = [
   {
     name: "auth",
     path: "",
-    redirect: "/authorisation",
+    redirect: "/authorization",
     component: AuthContainer,
     children: [
       {
@@ -26,9 +26,9 @@ const routes: Array<RouteRecordRaw> = [
         }
       },
       {
-        path: "/authorisation",
-        name: "Authorisation",
-        component: Authorisation,
+        path: "/authorization",
+        name: "Authorization",
+        component: Authorization,
         meta: {
           isAuthPage: true,
         }
@@ -98,7 +98,7 @@ router.beforeEach((to) => {
   const { isAuth } = store.state;
 
   if (!isAuth && !to.meta.isAuthPage) {
-    return { name: 'Authorisation' }
+    return { name: 'Authorization' }
   }
 
   if (isAuth && to.meta.isAuthPage) {

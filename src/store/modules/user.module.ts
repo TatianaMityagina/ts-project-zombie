@@ -7,8 +7,8 @@ const userModule: Module<UserState, RootState> = {
         bgChange: false,
     },
     mutations: {
-        [MutationTypes.SET_IS_BG_CHANGE](state, item) {
-            state.bgChange = !item
+        [MutationTypes.SET_IS_BG_CHANGE](state, item: boolean) {
+            state.bgChange = item
         }
     },
     getters: {
@@ -17,10 +17,9 @@ const userModule: Module<UserState, RootState> = {
     actions: {
       async [ActionTypes.CHANGE_COLOR]({commit, dispatch}, item) {
           const actionPermitted = await dispatch(ActionTypes.CHECK_PERMISSION, ActionTypes.CHANGE_COLOR, {root: true});
-          if (!actionPermitted) {
-              return
+          if (actionPermitted) {
+              commit(MutationTypes.SET_IS_BG_CHANGE, item);
           }
-          commit(MutationTypes.SET_IS_BG_CHANGE, item);
       }
     }
 }

@@ -1,6 +1,6 @@
 <template>
   <header class="header-auth">
-      <app-button type="button" @click="$router.push('/authorisation')">Login</app-button>
+      <app-button type="button" @click="$router.push('/authorization')">Login</app-button>
   </header>
 </template>
 

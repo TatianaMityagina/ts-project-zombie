@@ -1,6 +1,12 @@
 <template>
   <div class="app-checkbox">
-    <input class="app-checkbox__input visually-hidden" id="checkbox" v-bind="$attrs"  @change="$emit('update:modelValue', $event.target.checked)" :checked="$attrs.modelValue"/>
+    <input
+        class="app-checkbox__input visually-hidden"
+        id="checkbox"
+        v-bind="$attrs"
+        @change="$emit('update:modelValue', $event.target.checked)"
+        :checked="$attrs.modelValue"
+    />
     <label class="app-checkbox__label" for="checkbox"><slot></slot></label>
   </div>
 </template>
