@@ -1,26 +1,109 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router";
-import HomeView from "../views/HomeView.vue";
+import store from "@/store";
+import Home from "@/views/HomePage.vue";
+import Registration from "@/views/RegistraionPage.vue";
+import Authorization from "@/views/AuthorizationPage.vue";
+import AboutUs from "@/views/AboutUsPage.vue";
+import HistoryPage from "@/views/HistoryPage.vue";
+import ErrorPage from "@/views/ErrorPage.vue";
+import AuthContainer from "@/components/containers/AuthContainer.vue";
+import UserContainer from "@/components/containers/UserContainer.vue";
+import AuthService from "@/services/authService";
 
 const routes: Array<RouteRecordRaw> = [
   {
-    path: "/",
-    name: "home",
-    component: HomeView,
+    name: "auth",
+    path: "",
+    redirect: "/authorization",
+    component: AuthContainer,
+    children: [
+      {
+        path: "/registration",
+        name: "Registration",
+        component: Registration,
+        meta: {
+          isAuthPage: true,
+        }
+      },
+      {
+        path: "/authorization",
+        name: "Authorization",
+        component: Authorization,
+        meta: {
+          isAuthPage: true,
+        }
+      },
+    ]
   },
   {
-    path: "/about",
-    name: "about",
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () =>
-      import(/* webpackChunkName: "about" */ "../views/AboutView.vue"),
+    path: "/:pathMatch(.*)*",
+    name: "ErrorPage",
+    component: ErrorPage,
   },
 ];
+
+export const rolesRoutes: Record<string, RouteRecordRaw> = {
+  user: {
+    name: "user",
+        path: "",
+        component: UserContainer,
+        children: [
+      {
+        path: "/home",
+        name: "Home",
+        component: Home,
+      },
+      {
+        path: "/about-us",
+        name: "AboutUs",
+        component: AboutUs,
+      },
+    ]
+  },
+  admin: {
+    name: "user",
+    path: "",
+    component: UserContainer,
+    children: [
+      {
+        path: "/home",
+        name: "Home",
+        component: Home,
+      },
+      {
+        path: "/about-us",
+        name: "AboutUs",
+        component: AboutUs,
+      },
+      {
+        path: "/history",
+        name: "HistoryPage",
+        component: HistoryPage,
+      },
+    ]
+  }
+}
 
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
   routes,
-});
+})
+
+const authService = new AuthService()
+const currentUser = authService.getCurrentUser()
+if (currentUser) {
+  router.addRoute(rolesRoutes[currentUser.role])
+}
+router.beforeEach((to) => {
+  const { isAuth } = store.state;
+
+  if (!isAuth && !to.meta.isAuthPage) {
+    return { name: 'Authorization' }
+  }
+
+  if (isAuth && to.meta.isAuthPage) {
+    return { name: 'Home' }
+  }
+})
 
 export default router;

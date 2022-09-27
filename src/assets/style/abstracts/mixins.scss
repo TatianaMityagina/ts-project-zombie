@@ -1,0 +1,45 @@
+// Desktop first
+
+@mixin viewport--xl {
+    @media (max-width: $viewport--xxl - 1) {
+        @content;
+    }
+}
+
+@mixin viewport--lg {
+    @media (max-width: $viewport--xl - 1) {
+        @content;
+    }
+}
+
+@mixin viewport--md {
+    @media (max-width: $viewport--lg - 1) {
+        @content;
+    }
+}
+
+@mixin viewport--sm {
+    @media (max-width: $viewport--md - 1) {
+        @content;
+    }
+}
+
+@mixin retina {
+    @media (min-resolution: $retina-dpi), (min-resolution: $retina-dppx) {
+        @content;
+    }
+}
+
+@mixin list-reset {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+@mixin btn-reset {
+    padding: 0;
+
+    background: $color-transparent;
+    border: none;
+    cursor: pointer;
+}
